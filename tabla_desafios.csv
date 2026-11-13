@@ -1,0 +1,13 @@
+Experimento / Variante,train_acc / val_acc,test_acc / F1 / AUC,Observación
+"Base RNA: [32,16], 80/20",0.980 / 0.937,0.971 / 0.976 / 0.998,"Referencia. Mejor val_loss en epoch 87; brecha train-val 0.044, sin sobreajuste marcado."
+"Desafío 1a: [64,32,16]",0.952 / 0.905,0.942 / 0.952 / 0.998,Cambio de -3 paciente(s) vs base: no concluyente. Mejor val_loss en epoch 22.
+"Desafío 1b: [128,64,32,16]",0.992 / 0.968,0.971 / 0.976 / 0.999,Converge antes (epoch 50) pero val_acc no mejora: más capas no aportan en un dataset pequeño y fácil.
+Desafío 2a: Partición 50/50,0.959 / 0.923,0.915 / 0.929 / 0.973,Peor resultado: con solo 260 casos de entrenamiento la red aprende menos (AUC más bajo).
+Desafío 2b: Partición 95/5,0.981 / 0.973,1.000 / 1.000 / 1.000,n_test=26: métrica poco confiable (IC 95% muy ancho); no se puede concluir que sea mejor.
+Desafío 3a: GBT 10 árboles,0.981 / —,0.981 / 0.984 / 0.989,Con 10 árboles ya rinde casi igual que con 100.
+Desafío 3b: GBT 500 árboles,1.000 / —,0.981 / 0.984 / 1.000,Satura desde ~50 árboles; 500 solo cuestan más tiempo (0.9 s) sin mejorar el accuracy. Diferencia vs RNA base: +1 paciente(s).
+Desafío 4a: GBT lr=0.001,0.615 / —,0.615 / 0.762 / 0.991,"Subajuste: predice todo ""Positivo"" (acc = proporción de la clase positiva); el AUC alto indica que ordena bien pero las probabilidades no cruzan 0.5."
+Desafío 4b: GBT lr=1.0,1.000 / —,0.981 / 0.984 / 1.000,"train 1.000; sin caída dramática en test en este dataset, aunque es el lr más riesgoso."
+Desafío 5: Sin Poliuria,0.969 / 0.952,0.971 / 0.976 / 0.993,"No baja: la RNA compensa con variables redundantes (Polidipsia). Con un solo split, ±1 paciente es ruido; ver feature_importances_ del GBT."
+Desafío 6: RNA semilla 0,0.972 / 0.968,0.942 / 0.953 / 0.995,RNA media 0.9654 ± 0.0146 en 5 semillas.
+Desafío 6: GBT semilla 0,1.000 / —,0.981 / 0.984 / 0.995,GBT media 0.9808 ± 0.0118 en 5 semillas.
